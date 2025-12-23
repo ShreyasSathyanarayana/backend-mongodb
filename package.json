@@ -1,11 +1,6 @@
 {
   "name": "backend",
   "module": "index.ts",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "dev": "nodemon src/index.js"
-  },
   "devDependencies": {
     "@types/bun": "latest",
     "nodemon": "^3.1.11",
@@ -14,7 +9,16 @@
   "peerDependencies": {
     "typescript": "^5"
   },
+  "private": true,
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "type": "module",
   "dependencies": {
-    "dotenv": "^17.2.3"
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.0.2"
   }
 }
