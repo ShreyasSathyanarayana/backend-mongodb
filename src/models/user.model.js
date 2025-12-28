@@ -52,11 +52,11 @@ const userSchema = new mongoose.Schema(
 );
 
 // mongoose middleware
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  const hash = await bcrypt.hashSync(this.password, process.env.PASSWORD_SALT);
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return ; 
+  const hash = await bcrypt.hashSync(this.password, parseInt(process.env.PASSWORD_SALT));
   this.password = hash;
-  next();
+  return
 });
 
 // mongoose method
