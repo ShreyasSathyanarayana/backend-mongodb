@@ -3,6 +3,7 @@ import {
   changeCurrentPassword,
   getCurrentUser,
   getUserChannelProfile,
+  getUserWatchHistory,
   loginUser,
   logOutUser,
   refreshToken,
@@ -28,5 +29,11 @@ router.post("/refresh-token", refreshToken);
 router.post("/change-password", protectedRoute, changeCurrentPassword);
 router.get('/me',protectedRoute,getCurrentUser)
 router.post('/update-details',protectedRoute,updateUserDetails)
-router.get('/:username',protectedRoute,getUserChannelProfile)
+router.get("/watch-history", protectedRoute, getUserWatchHistory);
+
+
+
+router.get('/channel/:username',protectedRoute,getUserChannelProfile)
+
+
 export default router;

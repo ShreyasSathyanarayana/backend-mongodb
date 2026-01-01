@@ -3,8 +3,9 @@ import { ApiErrors } from "../utils/ApiErrors.js";
 import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import fs from "fs";
+import fs, { watch } from "fs";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 export const registerUser = asyncHandler(async (req, res) => {
   // gather the request body
@@ -342,4 +343,63 @@ export const getUserChannelProfile = asyncHandler(async (req, res) => {
   }
 
   return res.status(200).json(new ApiResponse(200, "User found", channel[0]));
+});
+
+export const getUserWatchHistory = asyncHandler(async (req, res) => {
+  const user = await User.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(req?.user?._id?.toString()),
+      },
+    },
+    {
+      $lookup: {
+        from: "videos",
+        localField: "watchHistory",
+        foreignField: "_id",
+        as: "watchHistory",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              localField: "owner",
+              foreignField: "_id",
+              as: "owner",
+              pipeline: [
+                {
+                  $project: {
+                    fullName: 1,
+                    username: 1,
+                    avatar: 1,
+                  },
+                },
+              ],
+            },
+          },
+          {
+            $addFields: {
+              owner: {
+                $first: "$owner",
+              },
+            },
+          },
+        ],
+      },
+    },
+    {
+      $project: {
+        watchHistory: 1,
+        username: 1,
+        fullName:1,
+        avatar:1,
+        coverImage:1,
+        createdAt:1,
+        updatedAt:1
+      },
+    }
+  ]);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "User watch history found", user[0]));
 });

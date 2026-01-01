@@ -18,7 +18,6 @@ const protectedRoute = asyncHandler(async (req, res, next) => {
     );
 
     const user = await User.findById(decoded?._id)
-      .findOne()
       .select("-password -refreshToken");
 
     if (!user) {
