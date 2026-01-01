@@ -1,9 +1,12 @@
 import { Router } from "express";
 import {
+  changeCurrentPassword,
+  getCurrentUser,
   loginUser,
   logOutUser,
   refreshToken,
   registerUser,
+  updateUserDetails,
 } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { protectedRoute } from "../middlewares/auth.middleware.js";
@@ -20,6 +23,8 @@ router.route("/register").post(
 
 router.post("/login", loginUser);
 router.post("/logout", protectedRoute, logOutUser);
-router.post('/refresh-token', refreshToken)
-
+router.post("/refresh-token", refreshToken);
+router.post("/change-password", protectedRoute, changeCurrentPassword);
+router.get('/me',protectedRoute,getCurrentUser)
+router.post('/update-details',protectedRoute,updateUserDetails)
 export default router;
