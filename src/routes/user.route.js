@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   changeCurrentPassword,
   getCurrentUser,
+  getUserChannelProfile,
   loginUser,
   logOutUser,
   refreshToken,
@@ -27,4 +28,5 @@ router.post("/refresh-token", refreshToken);
 router.post("/change-password", protectedRoute, changeCurrentPassword);
 router.get('/me',protectedRoute,getCurrentUser)
 router.post('/update-details',protectedRoute,updateUserDetails)
+router.get('/:username',protectedRoute,getUserChannelProfile)
 export default router;
